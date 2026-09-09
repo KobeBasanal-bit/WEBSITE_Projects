@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kobe Basanal &middot; Hobbies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1119;
+  --bg-glow:#171b2c;
+  --panel:#181c2b;
+  --panel-2:#1f2436;
+  --line:#2a304a;
+  --text:#e9e7dd;
+  --text-dim:#98a0ba;
+  --amber:#e7b34c;
+  --amber-dim:#a9853c;
+  --teal:#5fc9c0;
+  --teal-dim:#3f8b85;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(620px 380px at 12% -6%, rgba(231,179,76,.10), transparent 60%),
+    radial-gradient(560px 420px at 100% 0%, rgba(95,201,192,.10), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Manrope',sans-serif;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.tab,.brand-name,.stat-num,.badge,.tile-cta,.stage-tag,.quest-tag{
+  font-family:'Chakra Petch',sans-serif;
+}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+/* ---------- HUD NAV ---------- */
+.hud{
+  position:sticky;top:0;z-index:50;
+  background:rgba(15,17,25,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.hud-inner{
+  max-width:1080px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;padding:14px 24px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+.brand-badge{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--amber),var(--teal));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:14px;color:#12141d;
+}
+.brand-name{font-weight:600;font-size:15px;letter-spacing:.02em}
+.tabs{
+  display:flex;gap:4px;background:var(--panel);
+  padding:5px;border-radius:999px;border:1px solid var(--line);
+}
+.tab{
+  padding:8px 16px;border-radius:999px;
+  color:var(--text-dim);text-decoration:none;
+  font-weight:600;font-size:13.5px;letter-spacing:.03em;
+  transition:color .15s,background .15s;
+}
+.tab:hover{color:var(--text)}
+.tab.active{background:var(--panel-2);color:var(--amber)}
+
+/* ---------- LAYOUT ---------- */
+main{max-width:1080px;margin:0 auto;padding:54px 24px 100px}
+.page-head{max-width:640px;margin-bottom:40px}
+.page-head h1{font-size:34px;margin:0 0 10px;letter-spacing:.01em}
+.page-head p{color:var(--text-dim);font-size:16px;margin:0;max-width:60ch}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:28px 24px;text-align:center;
+  color:var(--text-dim);font-size:13px;
+}
+
+/* ---------- HERO (home) ---------- */
+.hero{
+  display:grid;grid-template-columns:230px 1fr;gap:44px;
+  align-items:center;padding:10px 0 54px;
+}
+.portrait-wrap{position:relative;width:230px}
+.portrait-frame{
+  width:230px;height:230px;
+  clip-path:polygon(25% 4%,75% 4%,100% 50%,75% 96%,25% 96%,0% 50%);
+  overflow:hidden;background:var(--panel-2);
+  border:2px solid var(--line);
+}
+.portrait-frame img{width:100%;height:100%;object-fit:cover}
+.level-badge{
+  position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
+  background:var(--panel-2);border:1px solid var(--line);
+  color:var(--amber);font-weight:600;font-size:12px;
+  padding:6px 14px;border-radius:999px;white-space:nowrap;
+  letter-spacing:.03em;
+}
+.hero-info h1{font-size:38px;margin:0 0 6px}
+.hero-info .role{
+  color:var(--teal);font-weight:600;font-size:14px;
+  letter-spacing:.03em;margin:0 0 18px;
+}
+.hero-info .bio{color:var(--text-dim);font-size:15.5px;max-width:60ch;margin:0 0 12px}
+.traits{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{
+  background:var(--panel);border:1px solid var(--line);
+  padding:7px 13px;border-radius:999px;font-size:13px;color:var(--text)
+}
+
+/* ---------- EXPLORE TILES ---------- */
+.section-label{
+  font-size:13px;color:var(--text-dim);font-weight:600;
+  letter-spacing:.03em;margin:0 0 18px;
+}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tile{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:24px;text-decoration:none;color:var(--text);
+  display:flex;flex-direction:column;gap:10px;
+  transition:border-color .15s,transform .15s;
+}
+.tile:hover{border-color:var(--teal-dim);transform:translateY(-2px)}
+.tile-icon{
+  width:42px;height:42px;border-radius:11px;
+  background:var(--panel-2);display:flex;align-items:center;
+  justify-content:center;font-size:20px;
+}
+.tile h3{margin:0;font-size:18px}
+.tile p{margin:0;color:var(--text-dim);font-size:14px}
+.tile-cta{
+  margin-top:auto;font-size:12.5px;color:var(--amber);
+  font-weight:600;letter-spacing:.03em;padding-top:6px;
+}
+
+/* ---------- EDUCATION TIMELINE ---------- */
+.path{position:relative;padding-left:36px}
+.path::before{
+  content:"";position:absolute;left:11px;top:6px;bottom:6px;width:2px;
+  background:linear-gradient(var(--teal-dim),var(--line));
+}
+.stage{position:relative;margin-bottom:36px}
+.stage:last-child{margin-bottom:0}
+.stage::before{
+  content:"";position:absolute;left:-36px;top:6px;width:24px;height:24px;
+  border-radius:50%;background:var(--panel-2);border:2px solid var(--teal-dim);
+}
+.stage.current::before{border-color:var(--amber);background:var(--amber)}
+.stage-card{
+  display:grid;grid-template-columns:150px 1fr;gap:22px;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:20px;align-items:center;
+}
+.stage-photo{
+  width:150px;height:150px;border-radius:12px;overflow:hidden;
+  background:var(--panel-2);border:1px solid var(--line);
+}
+.stage-photo img{width:100%;height:100%;object-fit:cover}
+.stage-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.stage-tag{
+  font-size:11.5px;font-weight:600;letter-spacing:.05em;
+  color:var(--teal);background:rgba(95,201,192,.08);
+  border:1px solid var(--teal-dim);padding:3px 10px;border-radius:999px;
+}
+.stage.current .stage-tag{
+  color:var(--amber);border-color:var(--amber-dim);background:rgba(231,179,76,.1);
+}
+.stage-status{font-size:12px;color:var(--text-dim)}
+.stage-card h3{margin:0 0 4px;font-size:19px}
+.stage-card .school{color:var(--text-dim);font-size:14px;margin:0}
+
+/* ---------- SKILL GRID (hobbies) ---------- */
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.skill-card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:24px;
+}
+.skill-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.skill-icon{
+  width:46px;height:46px;border-radius:12px;flex:none;
+  background:var(--panel-2);display:flex;align-items:center;
+  justify-content:center;font-size:22px;
+}
+.skill-card h3{margin:0;font-size:18px}
+.skill-card p{margin:0;color:var(--text-dim);font-size:14.5px}
+.skill-tag{
+  display:inline-block;margin-top:14px;font-size:11.5px;font-weight:600;
+  letter-spacing:.04em;color:var(--amber);
+  background:rgba(231,179,76,.08);border:1px solid var(--amber-dim);
+  padding:3px 10px;border-radius:999px;
+}
+
+/* ---------- QUEST LOG (goals) ---------- */
+.quests{display:flex;flex-direction:column;gap:16px}
+.quest{
+  display:grid;grid-template-columns:52px 1fr;gap:18px;
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:16px;padding:22px;
+}
+.quest-icon{
+  width:52px;height:52px;border-radius:13px;
+  background:var(--panel-2);display:flex;align-items:center;
+  justify-content:center;font-size:24px;
+}
+.quest-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.quest h3{margin:0;font-size:18px}
+.quest-tag{
+  font-size:11px;font-weight:600;letter-spacing:.05em;
+  color:var(--teal);background:rgba(95,201,192,.08);
+  border:1px solid var(--teal-dim);padding:2px 9px;border-radius:999px;
+}
+.quest p{margin:0;color:var(--text-dim);font-size:14.5px;max-width:68ch}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;text-align:center;gap:28px}
+  .portrait-wrap{margin:0 auto}
+  .hero-info .bio{max-width:100%}
+  .traits{justify-content:center}
+  .tiles{grid-template-columns:1fr}
+  .skills{grid-template-columns:1fr}
+  .stage-card{grid-template-columns:1fr}
+  .stage-photo{width:100%;height:200px}
+  .quest{grid-template-columns:1fr}
+  .hud-inner{justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important}
+}
+
+</style>
+</head>
+<body>
+  <header class="hud">
+    <div class="hud-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-badge">KB</span>
+        <span class="brand-name">Kobe Basanal</span>
+      </a>
+      <nav class="tabs">
+      <a href="index.html" class="tab">Home</a>
+      <a href="education.html" class="tab">Education</a>
+      <a href="hobbies.html" class="tab active">Hobbies</a>
+      <a href="goals.html" class="tab">Goals</a>
+      </nav>
+    </div>
+  </header>
+<main>
+  <div class="page-head">
+    <h1>Hobbies &amp; interests</h1>
+    <p>What I actually spend my free time on, between classes and deadlines.</p>
+  </div>
+
+  <div class="skills">
+    <div class="skill-card">
+      <div class="skill-top">
+        <span class="skill-icon">&#127918;</span>
+        <h3>Gaming</h3>
+      </div>
+      <p>Gaming is one of my favorite ways to unwind after dealing with schoolwork and other responsibilities. I enjoy all kinds of games, especially with friends or something new to try. It's less about winning and more about having fun and stepping away from the usual routine.</p>
+      <span class="skill-tag">Unlocked early</span>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-top">
+        <span class="skill-icon">&#128564;</span>
+        <h3>Resting &amp; sleeping</h3>
+      </div>
+      <p>Honestly, sleep might be my favorite hobby of all &mdash; especially as a college student juggling classes, assignments, and deadlines. A good night's rest helps me feel ready for the next day, even if getting enough of it isn't always easy during a busy week.</p>
+      <span class="skill-tag">Passive skill</span>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-top">
+        <span class="skill-icon">&#128187;</span>
+        <h3>Technology &amp; programming</h3>
+      </div>
+      <p>As a BSIT student, I'm naturally drawn to technology and how computers and programs actually work. Programming gets challenging, but there's a real satisfaction in finally getting a piece of code to run after fighting with it for a while.</p>
+      <span class="skill-tag">In training</span>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-top">
+        <span class="skill-icon">&#127760;</span>
+        <h3>Other interests</h3>
+      </div>
+      <p>Like most college students, I enjoy browsing the internet, watching videos, and discovering random interesting topics. My interests shift depending on what catches my attention, and I think that variety makes college life a lot less stressful.</p>
+      <span class="skill-tag">Always rotating</span>
+    </div>
+  </div>
+</main>
+<footer>Kobe D. Basanal &middot; BSIT-2A Algorithm &middot; Cebu Technological University</footer>
+</body>
+</html>
