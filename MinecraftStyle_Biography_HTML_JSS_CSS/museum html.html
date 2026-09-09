@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum of Love</title>
+    <style>
+        :root {
+            --bg-grad-1: #1a0510;
+            --bg-grad-2: #2d0b1e;
+            --card-bg: rgba(25, 5, 15, 0.75); /* Darkened slightly to make lights pop */
+            --primary: #f43f5e;
+            --accent: #ff0055;
+            --accent-glow: rgba(255, 0, 85, 0.6);
+            --text-main: #fff0f5;
+            --text-muted: #fecdd3;
+            --border: rgba(254, 205, 211, 0.3);
+            --neon-text: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--accent), 0 0 40px var(--accent);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Animated Background Orbs */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.6;
+            z-index: 0;
+            pointer-events: none;
+            animation: floatOrb 14s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 380px;
+            height: 380px;
+            background: #ff0055;
+            top: 5%;
+            left: 10%;
+            animation: pulseOrb 4s infinite alternate;
+        }
+
+        .orb-2 {
+            width: 420px;
+            height: 420px;
+            background: #700022;
+            bottom: 5%;
+            right: 10%;
+            animation-delay: -7s;
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, -40px) scale(1.1); }
+            100% { transform: translate(-40px, 30px) scale(0.95); }
+        }
+
+        /* Falling Flowers Layer */
+        #falling-flowers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2; /* Drifts slightly over the card */
+            overflow: hidden;
+        }
+
+        .falling-flower {
+            position: absolute;
+            top: -10vh;
+            user-select: none;
+            animation-name: fallAndSpin;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8)); /* Flowers light up */
+        }
+
+        @keyframes fallAndSpin {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Particle Trail Canvas */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .museum-container {
+            max-width: 750px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 45px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 30px rgba(255, 0, 85, 0.2);
+            position: relative;
+            z-index: 1;
+            animation: cardEntrance 1s ease-out, containerBreathe 4s infinite alternate;
+        }
+
+        /* Container ambient breathing light */
+        @keyframes containerBreathe {
+            0% { box-shadow: 0 0 20px rgba(255, 0, 85, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.05); }
+            100% { box-shadow: 0 0 50px rgba(255, 0, 85, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.1); }
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+
+        /* Neon Title */
+        h1 {
+            color: #fff;
+            font-size: 2.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+            text-shadow: var(--neon-text);
+            animation: neonFlicker 3s infinite alternate;
+        }
+
+        @keyframes neonFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: var(--neon-text); }
+            20%, 24%, 55% { text-shadow: none; } /* Occasional flicker effect */
+        }
+
+        h1::after {
+            content: '🌸';
+            font-size: 1.5rem;
+            position: absolute;
+            top: -10px;
+            right: -35px;
+            animation: pulseHeart 1.8s infinite ease-in-out;
+            filter: drop-shadow(0 0 10px #fff);
+        }
+
+        @keyframes pulseHeart {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.3) rotate(15deg); opacity: 1; }
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 12px;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        .exhibit-hall {
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            border: 1px dashed var(--accent);
+            margin-bottom: 35px;
+            box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.1);
+        }
+
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        /* Glowing Memory Cards */
+        .memory-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 18px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-size: 0.95rem;
+            color: #fff;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .memory-card:hover {
+            transform: translateY(-8px) rotateX(4deg) rotateY(-4deg);
+            border-color: #fff;
+            box-shadow: 0 0 20px #fff, 0 0 40px var(--accent);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .image-wrapper {
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 14px;
+            border: 2px solid transparent;
+        }
+
+        .memory-card:hover .image-wrapper {
+            border-color: var(--text-muted);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        .exhibit-image {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .memory-card:hover .exhibit-image {
+            transform: scale(1.06);
+        }
+
+        .memory-card strong {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        .messages-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 30px;
+        }
+
+        .messages-section h3 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.35rem;
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        .love-notes {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .love-notes li {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 0.98rem;
+            font-style: italic;
+            color: #fff;
+            border-left: 4px solid var(--accent);
+            line-height: 1.5;
+            box-shadow: -5px 0 15px rgba(255, 0, 85, 0.4); /* Glowing left border */
+            animation: slideInNote 0.4s ease-out forwards;
+        }
+
+        .love-notes li:hover {
+            box-shadow: -5px 0 25px var(--accent), 0 0 10px rgba(255,255,255,0.2);
+            background: rgba(255, 0, 85, 0.1);
+        }
+
+        @keyframes slideInNote {
+            from { opacity: 0; transform: translateX(-20px); box-shadow: 0 0 0 transparent; }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            outline: none;
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        input[type="text"]:focus {
+            border-color: #fff;
+            box-shadow: 0 0 15px var(--accent);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        button.action-btn {
+            background: var(--accent);
+            color: white;
+            border: 1px solid #fff;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            box-shadow: 0 0 15px var(--accent-glow);
+            animation: pulseBtn 2s infinite alternate;
+        }
+
+        @keyframes pulseBtn {
+            0% { box-shadow: 0 0 10px var(--accent); }
+            100% { box-shadow: 0 0 25px #fff, 0 0 40px var(--accent); }
+        }
+
+        button.action-btn:hover {
+            background: #fff;
+            color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px #fff, 0 0 50px var(--accent);
+        }
+
+        button.action-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient background glows -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <!-- Container for falling flowers -->
+    <div id="falling-flowers"></div>
+
+    <!-- Interactive glowing cursor trail -->
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="museum-container">
+        <header>
+            <h1>Museum of Love</h1>
+            <p class="subtitle">A glowing exhibit dedicated to us</p>
+        </header>
+
+        <div class="exhibit-hall">
+            <div class="memory-grid">
+                <div class="memory-card">
+                    <div class="image-wrapper">
+                        <img class="exhibit-image" src="us.jpg" alt="Our First Memory">
+                    </div>
+                    <p><strong>My Favorite Smile</strong></p>
+                </div>
+
+                <div class="memory-card">
+                    <div class="image-wrapper">
+                        <img class="exhibit-image" src="us2.jpg" alt="Our Special Moment">
+                    </div>
+                    <p><strong>Forever Favorite Moment</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="messages-section">
+            <h3>Love Notes Exhibit</h3>
+            <ul class="love-notes" id="notesList">
+                <li>"Out of all the places in the world, right next to you is my absolute favorite place to be."</li>
+                <li>"You are my sun, my moon, and all of my stars. Loving you is the easiest thing I have ever done."</li>
+                <li>"Every ordinary day becomes extraordinary when I get to share it with you."</li>
+            </ul>
+
+            <div class="input-group">
+                <input type="text" id="noteInput" placeholder="Add another luminous note..." onkeypress="handleKeyPress(event)">
+                <button class="action-btn" onclick="addNote()">Add Note</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Note Addition Logic ---
+        function addNote() {
+            const input = document.getElementById('noteInput');
+            const notesList = document.getElementById('notesList');
+
+            if (input.value.trim() !== "") {
+                const li = document.createElement('li');
+                li.textContent = `"${input.value.trim()}"`;
+                notesList.prepend(li);
+                input.value = "";
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                addNote();
+            }
+        }
+
+        // --- Falling Flowers Background Effect ---
+        const floralEmojis = ['🌸', '🌺', '💮', '🌼', '🌷', '✨'];
+        const floralContainer = document.getElementById('falling-flowers');
+        const flowerCount = 35; // How many flowers on screen
+
+        for(let i = 0; i < flowerCount; i++) {
+            let flower = document.createElement('div');
+            flower.innerText = floralEmojis[Math.floor(Math.random() * floralEmojis.length)];
+            flower.className = 'falling-flower';
+            
+            // Randomize position, size, and speed
+            flower.style.left = Math.random() * 100 + 'vw';
+            flower.style.animationDuration = (Math.random() * 8 + 6) + 's'; // Between 6s and 14s
+            flower.style.animationDelay = (Math.random() * 10) + 's';
+            flower.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            
+            floralContainer.appendChild(flower);
+        }
+
+        // --- Mouse Hover / Cursor Canvas Trail Effect ---
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        // A mix of hearts, stars, and flowers for the cursor trail
+        const trailChars = ['♥', '🌸', '✨', '🌺']; 
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.char = trailChars[Math.floor(Math.random() * trailChars.length)];
+                this.size = Math.random() * 14 + 8;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * -2 - 0.5;
+                this.opacity = 1;
+                // Mostly pink/magenta glowing colors
+                this.color = `hsl(${Math.random() * 40 + 320}, 100%, 75%)`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= 0.015;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color; // Makes the trail particles glow
+                ctx.fillStyle = this.color;
+                ctx.font = `${this.size}px serif`;
+                ctx.fillText(this.char, this.x, this.y);
+                ctx.restore();
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            if (Math.random() < 0.4) {
+                particles.push(new Particle(e.clientX, e.clientY));
+            }
+        });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+    </script>
+
+</body>
+</html>
