@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Kobe D. Basanal - BS Information Technology Student, Developer & Systems Integrator">
+    <meta name="keywords" content="Kobe Basanal, BSIT, Portfolio, Java, Python, Web Development, Electronics Workbench, Cebu Technological University">
+    <meta name="author" content="Kobe D. Basanal">
+    
+    <title>Kobe D. Basanal | BSIT Software Engineering & Systems Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM VARIABLES & RESETS
+           ========================================================================== */
+        :root {
+            --bg-primary: #070a12;
+            --bg-secondary: #0f172a;
+            --bg-card: rgba(15, 23, 42, 0.75);
+            --bg-tertiary: #1e293b;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --accent-blue: #38bdf8;
+            --accent-cyan: #06b6d4;
+            --accent-purple: #818cf8;
+            --accent-green: #34d399;
+            --accent-amber: #fbbf24;
+            --accent-red: #f87171;
+            
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(56, 189, 248, 0.4);
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+            
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-tertiary: #f1f5f9;
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            
+            --accent-blue: #0284c7;
+            --accent-cyan: #0891b2;
+            --accent-purple: #4f46e5;
+            --accent-green: #059669;
+            
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(2, 132, 199, 0.4);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* 3D WebGL Background Canvas */
+        #webglCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           2. NAVIGATION HEADER
+           ========================================================================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(7, 10, 18, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .code-bracket { color: var(--accent-cyan); }
+        .code-slash { color: var(--accent-purple); }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .action-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .mobile-only { display: none; }
+
+        /* ==========================================================================
+           3. HERO SECTION
+           ========================================================================== */
+        .hero-section {
+            padding: 6rem 2rem 4rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.4rem 1rem;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: var(--accent-green);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--accent-green);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .highlight-text {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-purple);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-bio {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            max-width: 620px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
+            padding: 1.2rem 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+        }
+
+        .plus-sign {
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .btn {
+            padding: 0.85rem 1.8rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.5);
+        }
+
+        .secondary-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+            transform: translateY(-3px);
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .window-controls { display: flex; gap: 0.4rem; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ef4444; }
+        .yellow { background: #f59e0b; }
+        .green { background: #10b981; }
+
+        .terminal-title {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .card-body { padding: 1.5rem; }
+
+        .avatar-wrapper {
+            width: 100%;
+            height: 260px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 1.2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .terminal-info p {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .green-text { color: var(--accent-green); }
+        .blue-text { color: var(--accent-blue); }
+        .yellow-text { color: var(--accent-amber); }
+        .cyan-text { color: var(--accent-cyan); }
+
+        /* ==========================================================================
+           4. SECTIONS & SKILLS GRID
+           ========================================================================== */
+        .section-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            transition: var(--transition);
+        }
+
+        .skill-category-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+        }
+
+        .skill-category-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-list { list-style: none; }
+        .skill-list li { margin-bottom: 1.2rem; }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 4px;
+        }
+
+        /* ==========================================================================
+           5. PROJECTS GRID & FILTERS
+           ========================================================================== */
+        .project-filters {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.3rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-blue);
+            color: #ffffff;
+            border-color: var(--accent-blue);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.15);
+        }
+
+        .card-badge {
+            align-self: flex-start;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            margin-bottom: 1.2rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.35rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .tech-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tags span {
+            font-size: 0.75rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-action-btn {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        .card-action-btn:hover {
+            gap: 0.8rem;
+            color: var(--accent-cyan);
+        }
+
+        /* ==========================================================================
+           6. ROADMAP TIMELINE
+           ========================================================================== */
+        .goals-timeline {
+            position: relative;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .goals-timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            color: var(--text-muted);
+        }
+
+        .timeline-item.completed .timeline-marker {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #ffffff;
+        }
+
+        .timeline-item.active .timeline-marker {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.8rem;
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-size: 0.82rem;
+            font-family: var(--font-mono);
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .timeline-content h3 { margin: 0.4rem 0 0.6rem 0; }
+        .timeline-content p { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* ==========================================================================
+           7. INTERACTIVE LAB & SORTING VISUALIZER
+           ========================================================================== */
+        .interactive-lab-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            backdrop-filter: blur(16px);
+        }
+
+        .lab-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .lab-btn {
+            padding: 0.65rem 1.25rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .lab-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .primary-lab-btn { background: var(--accent-blue); color: #ffffff; border: none; }
+        .primary-lab-btn:hover { background: var(--accent-cyan); color: #ffffff; }
+
+        .speed-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-left: auto;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+        }
+
+        .visualizer-container {
+            height: 240px;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.2rem;
+        }
+
+        .array-bar {
+            flex: 1;
+            background: var(--accent-blue);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.1s ease, background-color 0.1s ease;
+        }
+
+        .array-bar.compare { background-color: var(--accent-amber); }
+        .array-bar.swap { background-color: var(--accent-red); }
+        .array-bar.sorted { background-color: var(--accent-green); }
+
+        .lab-terminal-log {
+            background: #000000;
+            padding: 1rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-green);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           8. CONTACT FORM & FOOTER
+           ========================================================================== */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 3rem;
+        }
+
+        .contact-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+        }
+
+        .contact-info-card h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .contact-info-card p { color: var(--text-secondary); margin-bottom: 2rem; }
+
+        .info-item {
+            display: flex;
+            gap: 1.2rem;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item i {
+            font-size: 1.3rem;
+            color: var(--accent-cyan);
+            margin-top: 0.2rem;
+        }
+
+        .info-item span { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+        .info-item p { color: var(--text-primary); font-weight: 600; margin: 0; }
+
+        .social-links-large {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links-large a {
+            width: 45px;
+            height: 45px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links-large a:hover {
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+        }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.4rem; }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .btn-full { width: 100%; justify-content: center; }
+
+        .form-status {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 650px;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.2rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .site-footer {
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem 2rem 2rem;
+            background: var(--bg-secondary);
+        }
+
+        .footer-container { max-width: 1280px; margin: 0 auto; }
+
+        .footer-brand {
+            margin-bottom: 2rem;
+            font-family: var(--font-mono);
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .back-to-top a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 992px) {
+            .hero-container, .contact-wrapper { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.8rem; }
+            .nav-links { display: none; }
+            .mobile-only { display: flex; }
+        }
+    </style>
+</head>
+<body class="dark-mode" id="top">
+
+    <canvas id="webglCanvas"></canvas>
+
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#top" class="logo" aria-label="Home">
+                <span class="code-bracket">&lt;</span><span class="logo-name">KOBE</span><span class="code-slash">/</span><span class="logo-role">DEV</span><span class="code-bracket">&gt;</span>
+            </a>
+            
+            <nav class="nav-links" id="navLinks">
+                <a href="#about" class="nav-item active"><i class="fa-solid fa-user-gear"></i> <span>About</span></a>
+                <a href="#skills" class="nav-item"><i class="fa-solid fa-microchip"></i> <span>Skills</span></a>
+                <a href="#projects" class="nav-item"><i class="fa-solid fa-diagram-project"></i> <span>Projects</span></a>
+                <a href="#goals" class="nav-item"><i class="fa-solid fa-bullseye"></i> <span>Roadmap</span></a>
+                <a href="#playground" class="nav-item"><i class="fa-solid fa-flask"></i> <span>Lab</span></a>
+                <a href="#contact" class="nav-item"><i class="fa-solid fa-paper-plane"></i> <span>Contact</span></a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="soundToggleBtn" class="action-btn" aria-label="Toggle Sound Effects" title="Toggle Sound FX">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <button id="themeToggleBtn" class="action-btn" aria-label="Toggle Dark/Light Mode" title="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button id="mobileMenuBtn" class="action-btn mobile-only" aria-label="Open Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="about">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-status">
+                        <span class="pulse-dot"></span> Available for Academic & Tech Collaborations
+                    </div>
+                    <h1 class="hero-title">
+                        Hi, I'm <span class="highlight-text">Kobe D. Basanal</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        <i class="fa-solid fa-graduation-cap"></i> BS Information Technology Student @ CTU – Argao Campus
+                    </p>
+                    <p class="hero-bio">
+                        Aspiring Software Engineer focused on Object-Oriented System Architecture, Discrete Computational Logic, and Web Engineering. I bridge digital logic design with user-friendly web interfaces.
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="4">0</span><span class="plus-sign">+</span>
+                            <span class="stat-label">Core Tech Stacks</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="12">0</span><span class="plus-sign">+</span>
+                            <span class="stat-label">Academic Projects</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="100">0</span><span class="plus-sign">%</span>
+                            <span class="stat-label">Dedication</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn primary-btn"><i class="fa-solid fa-rocket"></i> Explore Projects</a>
+                        <a href="#playground" class="btn secondary-btn"><i class="fa-solid fa-terminal"></i> Launch Interactive Lab</a>
+                    </div>
+                </div>
+
+                <div class="hero-avatar-card">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <div class="window-controls">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="terminal-title">kobe_profile_sys.env</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?auto=format&fit=crop&w=500&q=80" alt="Kobe D. Basanal Profile Picture">
+                            </div>
+                            <div class="terminal-info">
+                                <p><code>> status:</code> <span class="green-text">Enrolled / BSIT Degree</span></p>
+                                <p><code>> core_languages:</code> <span class="blue-text">["Java", "Python", "JS", "C++"]</span></p>
+                                <p><code>> logic_tools:</code> <span class="yellow-text">["Electronics Workbench", "Logisim"]</span></p>
+                                <p><code>> location:</code> <span class="cyan-text">Cebu, Philippines</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-container" id="skills">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-layer-group"></i> Technical Competencies</h2>
+                <p>Academic expertise, software toolkits, and programming frameworks acquired through BSIT coursework.</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-category-card">
+                    <div class="category-icon"><i class="fa-brands fa-java"></i></div>
+                    <h3>Backend & Languages</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <div class="skill-info"><span>Java (OOP, Structures)</span><span>90%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Python 3</span><span>85%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 85%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>JavaScript (ES6+)</span><span>80%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="skill-category-card">
+                    <div class="category-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3>Frontend Web Dev</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <div class="skill-info"><span>HTML5 Semantic Layouts</span><span>95%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 95%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>CSS3 (Flex/Grid/Animations)</span><span>90%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>DOM Manipulation & APIs</span><span>82%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 82%;"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="skill-category-card">
+                    <div class="category-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>Hardware & Discrete Math</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <div class="skill-info"><span>Digital Logic Circuit Simulation</span><span>88%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 88%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Electronics Workbench (EWB)</span><span>85%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 85%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Graph Theory (Kruskal/Prim)</span><span>80%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-container" id="projects">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-diagram-project"></i> BSIT Projects & Engineering Showcase</h2>
+                <p>Explore software, digital logic simulations, and academic research projects.</p>
+            </div>
+
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="java">Java / OOP</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+                <button class="filter-btn" data-filter="hardware">Logic & Hardware</button>
+                <button class="filter-btn" data-filter="web">Web & Research</button>
+            </div>
+
+            <div class="projects-grid">
+                <article class="project-card" data-category="hardware">
+                    <div class="card-badge">Digital Logic Design</div>
+                    <h3>0–99 Up/Down Digital Counter</h3>
+                    <p>Designed and simulated a bi-directional digital counter using cascading 74192 ICs, 74138 decoders, and clock timing generators in EWB. Team project by <em>KneeGears</em>.</p>
+                    <div class="tech-tags">
+                        <span>Electronics Workbench</span>
+                        <span>74192 IC</span>
+                        <span>74138 Decoder</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('counter')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="java">
+                    <div class="card-badge">Java Console Application</div>
+                    <h3>Employee Management System</h3>
+                    <p>An enterprise console-based management solution built with core Object-Oriented Programming (OOP) concepts, object arrays, and custom input validation logic.</p>
+                    <div class="tech-tags">
+                        <span>Java</span>
+                        <span>OOP Principles</span>
+                        <span>Data Structures</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('java-emp')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="python">
+                    <div class="card-badge">Python Scripting</div>
+                    <h3>Data Matrix & List Processor</h3>
+                    <p>Python module demonstrating array manipulations, dynamic list operations, string formatting, and conditional data processing algorithms.</p>
+                    <div class="tech-tags">
+                        <span>Python 3</span>
+                        <span>Array Operations</span>
+                        <span>Conditional Logic</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('python-matrix')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="web">
+                    <div class="card-badge">Full-Stack Front-End</div>
+                    <h3>Interactive Personal Portfolio</h3>
+                    <p>A responsive interactive website built with pure HTML5, CSS3 glassmorphism, Web Audio synthesis API, particle mechanics, and algorithmic tools.</p>
+                    <div class="tech-tags">
+                        <span>HTML5/CSS3</span>
+                        <span>JavaScript ES6</span>
+                        <span>Web Audio API</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('web-portfolio')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="web">
+                    <div class="card-badge">Academic Proposal</div>
+                    <h3>Campus Sustainability Audit</h3>
+                    <p>A remote environmental audit and research proposal analyzing energy consumption, waste processing, and campus biodiversity for CTU-Argao NSTP-CWTS.</p>
+                    <div class="tech-tags">
+                        <span>Academic Research</span>
+                        <span>Audit Metrics</span>
+                        <span>Sustainability</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('research-audit')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="java">
+                    <div class="card-badge">Discrete Mathematics</div>
+                    <h3>Graph Theory MST Solver</h3>
+                    <p>A computational tool visualizing graph representation models (Adjacency Matrices/Lists) and finding Minimum Spanning Trees using Kruskal's & Prim's algorithms.</p>
+                    <div class="tech-tags">
+                        <span>Java</span>
+                        <span>Discrete Math</span>
+                        <span>Graph Theory</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('graph-solver')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-container" id="goals">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-list-check"></i> Academic Quest & Career Roadmap</h2>
+                <p>Tracking milestone accomplishments, ongoing skill acquisition, and long-term targets.</p>
+            </div>
+
+            <div class="goals-timeline">
+                <div class="timeline-item completed">
+                    <div class="timeline-marker"><i class="fa-solid fa-check"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 1 &middot; Fundamental Engineering</span>
+                        <h3>Programming Foundations & Digital Circuits</h3>
+                        <p>Mastered Java Object-Oriented principles, array handling in Python, and simulated sequential logic counters with 7400-series ICs.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item active">
+                    <div class="timeline-marker"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 2 &middot; Current Academic Quest</span>
+                        <h3>Database Architecture & Full-Stack Systems</h3>
+                        <p>Developing expertise in SQL/Relational database design, asynchronous JavaScript web APIs, and responsive UI frameworks.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item planned">
+                    <div class="timeline-marker"><i class="fa-solid fa-hourglass-start"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 3 &middot; Upcoming Target</span>
+                        <h3>Capstone Systems Implementation</h3>
+                        <p>Architecting an enterprise-grade software application solving real-world domain challenges for local communities or campuses.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item planned">
+                    <div class="timeline-marker"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 4 &middot; Career Graduation Target</span>
+                        <h3>BSIT Degree & Full-Stack Developer Role</h3>
+                        <p>Graduate with top academic standings from CTU-Argao and launch a professional career as a Systems Architect & Developer.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-container" id="playground">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-flask"></i> Interactive Lab: Sorting Visualizer</h2>
+                <p>Experience real-time visual and procedural execution of sorting algorithms using dynamic DOM manipulations.</p>
+            </div>
+
+            <div class="interactive-lab-card">
+                <div class="lab-controls">
+                    <button id="generateArrayBtn" class="lab-btn"><i class="fa-solid fa-dice"></i> Generate New Array</button>
+                    <button id="startSortBtn" class="lab-btn primary-lab-btn"><i class="fa-solid fa-play"></i> Run Bubble Sort</button>
+                    
+                    <div class="speed-selector">
+                        <label for="sortSpeed"><i class="fa-solid fa-gauge-high"></i> Speed:</label>
+                        <input type="range" id="sortSpeed" min="10" max="200" value="100">
+                    </div>
+                </div>
+                
+                <div class="visualizer-container" id="visualizerContainer"></div>
+
+                <div class="lab-terminal-log" id="labLog">
+                    <code>[SYSTEM READY]: Select an algorithm above to visualize real-time array sorting.</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-container" id="contact">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-paper-plane"></i> Connect With Me</h2>
+                <p>Interested in tech collaborations or reviewing my academic portfolio? Send a message!</p>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-info-card">
+                    <h3>Contact Information</h3>
+                    <p>Feel free to reach out for software projects, tech discussions, or academic inquiries.</p>
+                    
+                    <div class="info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <span>Email</span>
+                            <p>kobe.basanal@ctu.edu.ph</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <span>Campus Base</span>
+                            <p>Cebu Technological University – Argao Campus, Cebu, PH</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <div>
+                            <span>Degree Program</span>
+                            <p>BS Information Technology</p>
+                        </div>
+                    </div>
+
+                    <div class="social-links-large">
+                        <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="mailto:kobe.basanal@ctu.edu.ph" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); handleFormSubmit();">
+                    <div class="form-group">
+                        <label for="userName">Your Name</label>
+                        <input type="text" id="userName" placeholder="e.g. Alex Mercer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Your Email</label>
+                        <input type="email" id="userEmail" placeholder="e.g. alex@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userSubject">Subject</label>
+                        <input type="text" id="userSubject" placeholder="Project Inquiry / Collaboration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userMessage">Message</label>
+                        <textarea id="userMessage" rows="5" placeholder="Write your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary-btn btn-full"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+                    <div class="form-status" id="formStatus"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="code-bracket">&lt;</span>KOBE<span class="code-slash">/</span>DEV<span class="code-bracket">&gt;</span>
+                <p>Built with pure HTML5, CSS3, Three.js 3D WebGL, and JavaScript ES6.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kobe D. Basanal. All rights reserved. CTU-Argao BSIT Portfolio.</p>
+                <div class="back-to-top">
+                    <a href="#top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="projectModal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true">
+            <button class="modal-close-btn" onclick="closeProjectModal()" aria-label="Close Modal">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================================================
+        // 1. THREE.JS REAL-TIME 3D BACKGROUND ENGINE
+        // ==========================================================================
+        const canvas3D = document.getElementById('webglCanvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas3D, alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Create Central 3D Wireframe Mesh (Icosahedron Core)
+        const icoGeometry = new THREE.IcosahedronGeometry(4, 2);
+        const icoMaterial = new THREE.MeshBasicMaterial({
+            color: 0x06b6d4,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.25
+        });
+        const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
+        scene.add(icosahedron);
+
+        // Inner Core Mesh
+        const innerGeometry = new THREE.IcosahedronGeometry(2, 1);
+        const innerMaterial = new THREE.MeshBasicMaterial({
+            color: 0x818cf8,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35
+        });
+        const innerIco = new THREE.Mesh(innerGeometry, innerMaterial);
+        scene.add(innerIco);
+
+        // 3D Particles Field (Starfield Dynamic Cloud)
+        const particlesCount = 700;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 30;
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.045,
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: 0.6
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        camera.position.z = 10;
+
+        // Mouse Parallax Effect Variables
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+
+        window.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) - 0.5;
+            mouseY = (event.clientY / window.innerHeight) - 0.5;
+        });
+
+        // 3D Rendering Animation Loop
+        const clock = new THREE.Clock();
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            const elapsedTime = clock.getElapsedTime();
+
+            // Rotate Meshes
+            icosahedron.rotation.x = elapsedTime * 0.1;
+            icosahedron.rotation.y = elapsedTime * 0.15;
+
+            innerIco.rotation.x = -elapsedTime * 0.2;
+            innerIco.rotation.y = -elapsedTime * 0.25;
+
+            particlesMesh.rotation.y = elapsedTime * 0.03;
+
+            // Parallax Smooth Movement
+            targetX = mouseX * 2;
+            targetY = mouseY * 2;
+            scene.rotation.y += (targetX - scene.rotation.y) * 0.05;
+            scene.rotation.x += (targetY - scene.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate3D();
+
+        // Responsive Resize Handler for 3D Engine
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ==========================================================================
+        // 2. SYNTHESIZED AUDIO SOUND FX
+        // ==========================================================================
+        let soundEnabled = true;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function playSound(freq, type = 'sine', duration = 0.08) {
+            if (!soundEnabled) return;
+            if (!audioCtx) audioCtx = new AudioContext();
+
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.warn("Audio Context Error:", e);
+            }
+        }
+
+        document.getElementById('soundToggleBtn').addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggleBtn');
+            btn.innerHTML = soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+            if (soundEnabled) playSound(600, 'sine', 0.1);
+        });
+
+        document.querySelectorAll('button, a, .filter-btn').forEach(elem => {
+            elem.addEventListener('mouseenter', () => playSound(350, 'sine', 0.04));
+            elem.addEventListener('click', () => playSound(700, 'triangle', 0.06));
+        });
+
+        // ==========================================================================
+        // 3. THEME SWITCHER & STAT NUMBERS
+        // ==========================================================================
+        const themeBtn = document.getElementById('themeToggleBtn');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+            
+            // Adjust 3D wireframe color dynamically for themes
+            icoMaterial.color.setHex(isLight ? 0x0284c7 : 0x06b6d4);
+            particlesMaterial.color.setHex(isLight ? 0x4f46e5 : 0x38bdf8);
+        });
+
+        function animateCounters() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = +stat.getAttribute('data-target');
+                let count = 0;
+                const speed = target / 30;
+                const updateCount = () => {
+                    count += speed;
+                    if (count < target) {
+                        stat.innerText = Math.ceil(count);
+                        setTimeout(updateCount, 40);
+                    } else {
+                        stat.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        }
+        window.addEventListener('DOMContentLoaded', animateCounters);
+
+        // ==========================================================================
+        // 4. PROJECT FILTERING & MODAL ENGINE
+        // ==========================================================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        const projectDetails = {
+            'counter': {
+                title: '0–99 Up/Down Digital Counter',
+                tech: 'Electronics Workbench & Digital Logic',
+                description: 'Constructed using cascading 74192 decade counter ICs driven by clock generators, converted via 74138 decoders, and routed to 7-segment LED displays. Features reversible counting modes and clear state reset functions.',
+                specs: ['Cascading 74192 ICs', '74138 Active-Low Decoders', 'Simulated in EWB v5.12']
+            },
+            'java-emp': {
+                title: 'Employee Management System',
+                tech: 'Java 17 / Object-Oriented Principles',
+                description: 'Console application featuring object composition, dynamic array expansion algorithms, data validation, and automated total payload calculations.',
+                specs: ['Polymorphism & Inheritance', 'Input Validation Routines', 'Array Dynamic Resizing']
+            },
+            'python-matrix': {
+                title: 'Data Matrix & List Processor',
+                tech: 'Python 3.10',
+                description: 'Features array initialization, list comprehension, and conditional logic for fast statistical computations.',
+                specs: ['List Operations', 'Matrix Operations', 'Algorithmic Optimizations']
+            },
+            'web-portfolio': {
+                title: 'Interactive Personal Portfolio',
+                tech: 'HTML5, Modern CSS3, JavaScript ES6 & Three.js',
+                description: 'Features dynamic WebGL 3D rendering, procedural sound FX via Web Audio API, dynamic sorting visualizer, and responsive UI components.',
+                specs: ['Three.js WebGL Engine', 'Web Audio API', 'CSS Glassmorphism UI']
+            },
+            'research-audit': {
+                title: 'Campus Environmental Audit',
+                tech: 'NSTP-CWTS Academic Proposal',
+                description: 'A sustainability audit covering energy consumption, waste processing, water usage, and biodiversity initiatives at CTU-Argao Campus.',
+                specs: ['Resource Analysis', 'Data Collection', 'Sustainability Plan']
+            },
+            'graph-solver': {
+                title: 'Graph Theory Minimum Spanning Tree Solver',
+                tech: 'Java & Discrete Mathematics',
+                description: 'Computes Minimum Spanning Trees using Kruskal\'s and Prim\'s algorithms from adjacency matrices and incidence structures.',
+                specs: ['Adjacency Matrix Conversion', 'Kruskal Greedy Solver', 'Prim MST Computation']
+            }
+        };
+
+        function openProjectModal(id) {
+            const modal = document.getElementById('projectModal');
+            const body = document.getElementById('modalBody');
+            const data = projectDetails[id];
+
+            if (data) {
+                const specsHtml = data.specs.map(s => `<li><i class="fa-solid fa-check green-text"></i> ${s}</li>`).join('');
+                body.innerHTML = `
+                    <h2 style="margin-bottom: 0.5rem; color: var(--accent-cyan); font-size: 1.8rem;">${data.title}</h2>
+                    <p style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-purple); margin-bottom: 1.2rem;">[Tech Stack: ${data.tech}]</p>
+                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">${data.description}</p>
+                    <h4 style="margin-bottom: 0.8rem; font-size: 1rem;">Key Technical Specifications:</h4>
+                    <ul style="list-style: none; margin-bottom: 2rem;" class="modal-specs">${specsHtml}</ul>
+                    <button class="btn primary-btn" onclick="closeProjectModal()"><i class="fa-solid fa-xmark"></i> Close Technical View</button>
+                `;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.remove('active');
+        }
+
+        // ==========================================================================
+        // 5. SORTING VISUALIZER ENGINE
+        // ==========================================================================
+        const visualizerContainer = document.getElementById('visualizerContainer');
+        const labLog = document.getElementById('labLog');
+        let array = [];
+        let isSorting = false;
+
+        function generateArray(size = 22) {
+            if (isSorting) return;
+            array = [];
+            for (let i = 0; i < size; i++) {
+                array.push(Math.floor(Math.random() * 80) + 15);
+            }
+            drawArray();
+            labLog.innerHTML = `<code>[SYSTEM]: Generated new randomized array (size ${size}). Ready to run algorithms.</code>`;
+        }
+
+        function drawArray() {
+            visualizerContainer.innerHTML = '';
+            array.forEach((val, idx) => {
+                const bar = document.createElement('div');
+                bar.className = 'array-bar';
+                bar.style.height = `${val}%`;
+                bar.id = `bar-${idx}`;
+                visualizerContainer.appendChild(bar);
+            });
+        }
+
+        async function bubbleSort() {
+            if (isSorting) return;
+            isSorting = true;
+            const delay = 210 - document.getElementById('sortSpeed').value;
+            labLog.innerHTML = `<code>[RUNNING]: Bubble Sort Algorithm started...</code>`;
+
+            for (let i = 0; i < array.length; i++) {
+                for (let j = 0; j < array.length - i - 1; j++) {
+                    const bar1 = document.getElementById(`bar-${j}`);
+                    const bar2 = document.getElementById(`bar-${j + 1}`);
+
+                    bar1.classList.add('compare');
+                    bar2.classList.add('compare');
+                    playSound(200 + array[j] * 6, 'sine', 0.02);
+
+                    await new Promise(r => setTimeout(r, delay));
+
+                    if (array[j] > array[j + 1]) {
+                        bar1.classList.remove('compare');
+                        bar2.classList.remove('compare');
+                        bar1.classList.add('swap');
+                        bar2.classList.add('swap');
+
+                        let temp = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = temp;
+
+                        bar1.style.height = `${array[j]}%`;
+                        bar2.style.height = `${array[j + 1]}%`;
+
+                        await new Promise(r => setTimeout(r, delay));
+                    }
+
+                    bar1.className = 'array-bar';
+                    bar2.className = 'array-bar';
+                }
+                document.getElementById(`bar-${array.length - i - 1}`).classList.add('sorted');
+            }
+
+            labLog.innerHTML = `<code>[SUCCESS]: Bubble Sort complete! Array fully sorted.</code>`;
+            playSound(850, 'sine', 0.15);
+            isSorting = false;
+        }
+
+        document.getElementById('generateArrayBtn').addEventListener('click', () => generateArray());
+        document.getElementById('startSortBtn').addEventListener('click', () => bubbleSort());
+
+        generateArray();
+
+        // ==========================================================================
+        // 6. CONTACT FORM HANDLING
+        // ==========================================================================
+        function handleFormSubmit() {
+            const status = document.getElementById('formStatus');
+            status.style.color = 'var(--accent-green)';
+            status.innerText = "Message sent successfully! Kobe will get back to you soon.";
+            document.getElementById('contactForm').reset();
+            playSound(750, 'sine', 0.2);
+        }
+    </script>
+</body>
+</html>
