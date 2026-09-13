@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio of Kobe D. Basanal - BS Information Technology Student & Software Integrator">
+    <title>Kobe D. Basanal | Cyber-Interactive BSIT Portfolio</title>
+    
+    <!-- External Fonts, Icons & Three.js 3D Engine -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. CORE NEON DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            --bg-primary: #030712;
+            --bg-secondary: rgba(15, 23, 42, 0.7);
+            --bg-card: rgba(17, 24, 39, 0.65);
+            --bg-card-hover: rgba(30, 41, 59, 0.85);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --neon-cyan: #06b6d4;
+            --neon-blue: #38bdf8;
+            --neon-purple: #a855f7;
+            --neon-magenta: #ec4899;
+            --neon-green: #10b981;
+            --neon-amber: #f59e0b;
+            
+            --border-glow: rgba(6, 182, 212, 0.25);
+            --border-hover: rgba(168, 85, 247, 0.6);
+            
+            --shadow-neon: 0 0 25px rgba(6, 182, 212, 0.25);
+            --shadow-purple: 0 0 35px rgba(168, 85, 247, 0.3);
+            
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: rgba(255, 255, 255, 0.8);
+            --bg-card: rgba(255, 255, 255, 0.75);
+            --bg-card-hover: rgba(241, 245, 249, 0.95);
+            
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            
+            --neon-cyan: #0284c7;
+            --neon-blue: #2563eb;
+            --neon-purple: #7c3aed;
+            --border-glow: rgba(2, 132, 199, 0.2);
+        }
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* 3D WebGL Background Canvas */
+        #webglCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Mouse Spotlight Background Tracking */
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, rgba(168, 85, 247, 0.05) 40%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        /* Ambient Glowing Orbs */
+        .glow-orb-1 {
+            position: absolute;
+            top: 10%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, transparent 70%);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .glow-orb-2 {
+            position: absolute;
+            top: 40%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+            filter: blur(100px);
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           2. NAVIGATION HEADER
+           ========================================================================== */
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: rgba(3, 7, 18, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 1.35rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        .code-bracket { color: var(--neon-cyan); }
+        .code-slash { color: var(--neon-purple); }
+
+        .nav-links {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .nav-item {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-glow);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+        }
+
+        .nav-actions { display: flex; gap: 0.8rem; }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            color: var(--text-primary);
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           3. BREATHTAKING HERO SECTION
+           ========================================================================== */
+        .hero-section {
+            padding: 7rem 2rem 5rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            min-height: 88vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--neon-green);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--neon-green);
+            animation: pulseGlow 1.6s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 18px var(--neon-green); }
+            100% { transform: scale(0.9); opacity: 0.7; }
+        }
+
+        .hero-title {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1.5px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-magenta));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShine 4s linear infinite;
+        }
+
+        @keyframes textShine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--neon-blue);
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .hero-bio {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2.2rem;
+            max-width: 640px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-card { display: flex; flex-direction: column; }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--text-primary);
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+        }
+
+        .plus-sign { color: var(--neon-purple); }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .hero-cta { display: flex; gap: 1.2rem; }
+
+        .btn {
+            padding: 0.95rem 2rem;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            color: #ffffff;
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 0 45px rgba(168, 85, 247, 0.6);
+        }
+
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            color: var(--text-primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--neon-purple);
+            background: rgba(168, 85, 247, 0.1);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-purple);
+        }
+
+        /* Neon Glass Terminal Card */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), var(--shadow-neon);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), var(--shadow-purple);
+        }
+
+        .card-header {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.9rem 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .window-controls { display: flex; gap: 0.5rem; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background: #ff5f56; box-shadow: 0 0 8px #ff5f56; }
+        .yellow { background: #ffbd2e; box-shadow: 0 0 8px #ffbd2e; }
+        .green { background: #27c93f; box-shadow: 0 0 8px #27c93f; }
+
+        .terminal-title { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); }
+        .card-body { padding: 1.8rem; }
+
+        .avatar-wrapper {
+            width: 100%;
+            height: 270px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-glow);
+            position: relative;
+        }
+
+        .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.95) contrast(1.05); }
+
+        .terminal-info p {
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .green-text { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
+        .blue-text { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
+        .purple-text { color: var(--neon-purple); text-shadow: 0 0 8px var(--neon-purple); }
+
+        /* ==========================================================================
+           4. SKILLS CARDS
+           ========================================================================== */
+        .section-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-header { margin-bottom: 3.5rem; }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .section-header p { color: var(--text-secondary); font-size: 1.1rem; }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: 2.2rem;
+            backdrop-filter: blur(20px);
+            transition: var(--transition);
+        }
+
+        .skill-category-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-purple);
+        }
+
+        .category-icon {
+            font-size: 2.2rem;
+            color: var(--neon-cyan);
+            margin-bottom: 1.2rem;
+            text-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .skill-category-card h3 { font-size: 1.4rem; margin-bottom: 1.5rem; }
+        .skill-list { list-style: none; }
+        .skill-list li { margin-bottom: 1.4rem; }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            border-radius: 4px;
+            box-shadow: 0 0 12px var(--neon-cyan);
+        }
+
+        /* ==========================================================================
+           5. PROJECTS GRID & FILTERS
+           ========================================================================== */
+        .project-filters {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glow);
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.92rem;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: 2.2rem;
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-cyan);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .card-badge {
+            align-self: flex-start;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: var(--font-mono);
+            color: var(--neon-cyan);
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            margin-bottom: 1.4rem;
+        }
+
+        .project-card h3 { font-size: 1.4rem; margin-bottom: 0.8rem; }
+        .project-card p { color: var(--text-secondary); font-size: 0.98rem; margin-bottom: 1.6rem; flex-grow: 1; }
+
+        .tech-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.8rem; }
+
+        .tech-tags span {
+            font-size: 0.78rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-action-btn {
+            background: none;
+            border: none;
+            color: var(--neon-cyan);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0;
+            transition: var(--transition);
+        }
+
+        .card-action-btn:hover { gap: 0.9rem; color: var(--neon-purple); }
+
+        /* ==========================================================================
+           6. ROADMAP TIMELINE
+           ========================================================================== */
+        .goals-timeline { position: relative; max-width: 900px; margin: 0 auto; }
+
+        .goals-timeline::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple), transparent);
+        }
+
+        .timeline-item { display: flex; gap: 2.2rem; margin-bottom: 3rem; position: relative; }
+
+        .timeline-marker {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            color: var(--text-muted);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .timeline-item.completed .timeline-marker {
+            background: var(--neon-green);
+            border-color: var(--neon-green);
+            color: #ffffff;
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        .timeline-item.active .timeline-marker {
+            background: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            color: #ffffff;
+            box-shadow: 0 0 25px var(--neon-cyan);
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            flex: 1;
+            backdrop-filter: blur(20px);
+        }
+
+        .timeline-date { font-size: 0.85rem; font-family: var(--font-mono); color: var(--neon-cyan); font-weight: 700; }
+        .timeline-content h3 { margin: 0.4rem 0 0.6rem 0; font-size: 1.25rem; }
+        .timeline-content p { color: var(--text-secondary); font-size: 0.98rem; }
+
+        /* ==========================================================================
+           7. INTERACTIVE LAB & VISUALIZER
+           ========================================================================== */
+        .interactive-lab-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            backdrop-filter: blur(25px);
+            box-shadow: var(--shadow-neon);
+        }
+
+        .lab-controls { display: flex; gap: 1rem; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; }
+
+        .lab-btn {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .lab-btn:hover { border-color: var(--neon-purple); color: var(--neon-purple); }
+        .primary-lab-btn { background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple)); border: none; color: #fff; }
+
+        .speed-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-left: auto;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .visualizer-container {
+            height: 260px;
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-glow);
+            margin-bottom: 1.5rem;
+        }
+
+        .array-bar {
+            flex: 1;
+            background: linear-gradient(180deg, var(--neon-cyan), var(--neon-blue));
+            border-radius: 4px 4px 0 0;
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+            transition: height 0.1s ease;
+        }
+
+        .array-bar.compare { background: var(--neon-amber); box-shadow: 0 0 15px var(--neon-amber); }
+        .array-bar.swap { background: var(--neon-magenta); box-shadow: 0 0 15px var(--neon-magenta); }
+        .array-bar.sorted { background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+
+        .lab-terminal-log {
+            background: #000000;
+            padding: 1.2rem;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            color: var(--neon-green);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* ==========================================================================
+           8. CONTACT & FOOTER
+           ========================================================================== */
+        .contact-wrapper { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; }
+
+        .contact-info-card, .contact-form {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-lg);
+            padding: 2.8rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .contact-info-card h3 { font-size: 1.6rem; margin-bottom: 1rem; }
+        .contact-info-card p { color: var(--text-secondary); margin-bottom: 2rem; }
+
+        .info-item { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 1.8rem; }
+        .info-item i { font-size: 1.4rem; color: var(--neon-cyan); margin-top: 0.2rem; text-shadow: 0 0 10px var(--neon-cyan); }
+        .info-item span { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+        .info-item p { color: var(--text-primary); font-weight: 600; margin: 0; }
+
+        .social-links-large { display: flex; gap: 1rem; margin-top: 2.5rem; }
+
+        .social-links-large a {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links-large a:hover {
+            color: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            box-shadow: var(--shadow-neon);
+            transform: translateY(-4px);
+        }
+
+        .form-group { margin-bottom: 1.4rem; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-full { width: 100%; justify-content: center; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border: 1px solid var(--neon-cyan);
+            width: 90%;
+            max-width: 650px;
+            border-radius: var(--radius-lg);
+            padding: 2.8rem;
+            position: relative;
+            box-shadow: var(--shadow-neon);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.8rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .site-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 4rem 2rem 2.5rem 2rem;
+            background: rgba(3, 7, 18, 0.9);
+        }
+
+        .footer-container { max-width: 1280px; margin: 0 auto; }
+        .footer-brand { margin-bottom: 2rem; font-family: var(--font-mono); }
+        .footer-brand p { color: var(--text-secondary); font-family: var(--font-sans); font-size: 0.95rem; margin-top: 0.5rem; }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .back-to-top a { color: var(--neon-cyan); text-decoration: none; font-weight: 700; }
+
+        @media (max-width: 992px) {
+            .hero-container, .contact-wrapper { grid-template-columns: 1fr; }
+            .hero-title { font-size: 3rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body class="dark-mode" id="top">
+
+    <!-- Interactive Mouse Spotlight Glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Ambient Glowing Orbs -->
+    <div class="glow-orb-1"></div>
+    <div class="glow-orb-2"></div>
+
+    <!-- 3D WebGL Background Canvas -->
+    <canvas id="webglCanvas"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#top" class="logo" aria-label="Home">
+                <span class="code-bracket">&lt;</span>KOBE<span class="code-slash">/</span>DEV<span class="code-bracket">&gt;</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="#about" class="nav-item active"><i class="fa-solid fa-user-gear"></i> <span>About</span></a>
+                <a href="#skills" class="nav-item"><i class="fa-solid fa-microchip"></i> <span>Skills</span></a>
+                <a href="#projects" class="nav-item"><i class="fa-solid fa-diagram-project"></i> <span>Projects</span></a>
+                <a href="#goals" class="nav-item"><i class="fa-solid fa-bullseye"></i> <span>Roadmap</span></a>
+                <a href="#playground" class="nav-item"><i class="fa-solid fa-flask"></i> <span>Lab</span></a>
+                <a href="#contact" class="nav-item"><i class="fa-solid fa-paper-plane"></i> <span>Contact</span></a>
+            </nav>
+
+            <div class="nav-actions">
+                <button id="soundToggleBtn" class="action-btn" aria-label="Toggle Audio FX" title="Toggle Sound FX">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+                <button id="themeToggleBtn" class="action-btn" aria-label="Toggle Theme" title="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main>
+        <!-- Breathtaking Hero Section -->
+        <section class="hero-section" id="about">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="badge-status">
+                        <span class="pulse-dot"></span> Active & Collaborating on BSIT Systems
+                    </div>
+                    <h1 class="hero-title">
+                        Hi, I'm <span class="gradient-text">Kobe D. Basanal</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        <i class="fa-solid fa-graduation-cap"></i> BSIT Undergraduate @ CTU – Argao Campus
+                    </p>
+                    <p class="hero-bio">
+                        Software developer and systems builder specializing in Object-Oriented System Architecture, Digital Logic Simulation, and Cybernetic Web User Interfaces.
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="4">0</span><span class="plus-sign">+</span>
+                            <span class="stat-label">Core Tech Stacks</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="12">0</span><span class="plus-sign">+</span>
+                            <span class="stat-label">Academic Projects</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-target="100">0</span><span class="plus-sign">%</span>
+                            <span class="stat-label">Engineering Focus</span>
+                        </div>
+                    </div>
+
+                    <div class="hero-cta">
+                        <a href="#projects" class="btn primary-btn"><i class="fa-solid fa-rocket"></i> Explore Showcase</a>
+                        <a href="#playground" class="btn secondary-btn"><i class="fa-solid fa-terminal"></i> Launch Algorithmic Lab</a>
+                    </div>
+                </div>
+
+                <div class="hero-avatar-card">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <div class="window-controls">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                            </div>
+                            <span class="terminal-title">kobe_profile_sys.env</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="avatar-wrapper">
+                                <img src="https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?auto=format&fit=crop&w=600&q=80" alt="Kobe D. Basanal">
+                            </div>
+                            <div class="terminal-info">
+                                <p><code>> status:</code> <span class="green-text">Enrolled / BSIT Degree</span></p>
+                                <p><code>> core_stack:</code> <span class="blue-text">["Java", "Python", "JavaScript"]</span></p>
+                                <p><code>> hardware_tools:</code> <span class="purple-text">["Electronics Workbench"]</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Competencies -->
+        <section class="section-container" id="skills">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-layer-group"></i> Technical Matrix</h2>
+                <p>Software engineering stacks, hardware circuit toolkits, and computer science fundamentals.</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-category-card">
+                    <div class="category-icon"><i class="fa-brands fa-java"></i></div>
+                    <h3>Backend & OOP</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <div class="skill-info"><span>Java (OOP & Structures)</span><span>90%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Python 3 Scripting</span><span>85%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 85%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>JavaScript (ES6+)</span><span>80%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="skill-category-card">
+                    <div class="category-icon"><i class="fa-solid fa-code"></i></div>
+                    <h3>Frontend Engineering</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <div class="skill-info"><span>HTML5 & Modern Layouts</span><span>95%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 95%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>CSS3 Glassmorphism & FX</span><span>90%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 90%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Three.js WebGL & Canvas</span><span>78%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 78%;"></div></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="skill-category-card">
+                    <div class="category-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <h3>Hardware Logic & Math</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <div class="skill-info"><span>Digital Circuit Simulation</span><span>88%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 88%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Electronics Workbench (EWB)</span><span>85%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 85%;"></div></div>
+                        </li>
+                        <li>
+                            <div class="skill-info"><span>Graph Theory (Kruskal/Prim)</span><span>80%</span></div>
+                            <div class="progress-bar"><div class="progress" style="width: 80%;"></div></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Showcase -->
+        <section class="section-container" id="projects">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-diagram-project"></i> Engineering Showcase</h2>
+                <p>Software applications, digital circuit simulations, and academic research projects.</p>
+            </div>
+
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="java">Java / OOP</button>
+                <button class="filter-btn" data-filter="python">Python</button>
+                <button class="filter-btn" data-filter="hardware">Hardware Logic</button>
+                <button class="filter-btn" data-filter="web">Web & Research</button>
+            </div>
+
+            <div class="projects-grid">
+                <article class="project-card" data-category="hardware">
+                    <div class="card-badge">Digital Logic Design</div>
+                    <h3>0–99 Up/Down Digital Counter</h3>
+                    <p>Designed and simulated a bi-directional counter using 74192 ICs, 74138 decoders, and clock timing generators in EWB. Team project by <em>KneeGears</em>.</p>
+                    <div class="tech-tags">
+                        <span>Electronics Workbench</span>
+                        <span>74192 IC</span>
+                        <span>74138 Decoder</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('counter')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="java">
+                    <div class="card-badge">Java Console System</div>
+                    <h3>Employee Management System</h3>
+                    <p>A console management solution built using core Object-Oriented Programming (OOP) concepts, object arrays, and custom input validation logic.</p>
+                    <div class="tech-tags">
+                        <span>Java</span>
+                        <span>OOP Principles</span>
+                        <span>Data Validation</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('java-emp')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="python">
+                    <div class="card-badge">Python Scripting</div>
+                    <h3>Data Matrix & List Processor</h3>
+                    <p>Python script demonstrating array manipulations, dynamic list operations, string formatting, and conditional logic algorithms.</p>
+                    <div class="tech-tags">
+                        <span>Python 3</span>
+                        <span>Array Manipulations</span>
+                        <span>Conditionals</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('python-matrix')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="web">
+                    <div class="card-badge">Full-Stack Front-End</div>
+                    <h3>Interactive Cybernetic Portfolio</h3>
+                    <p>A web portfolio featuring WebGL 3D particle systems, Web Audio synthesized sound FX, dynamic sorting visualizer, and neon glassmorphic UI.</p>
+                    <div class="tech-tags">
+                        <span>HTML5/CSS3</span>
+                        <span>Three.js WebGL</span>
+                        <span>Web Audio API</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('web-portfolio')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="web">
+                    <div class="card-badge">Academic Proposal</div>
+                    <h3>Campus Sustainability Audit</h3>
+                    <p>A remote environmental audit proposal analyzing energy usage, waste processing, and campus biodiversity for CTU-Argao NSTP-CWTS.</p>
+                    <div class="tech-tags">
+                        <span>Academic Research</span>
+                        <span>Environmental Audit</span>
+                        <span>NSTP</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('research-audit')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+
+                <article class="project-card" data-category="java">
+                    <div class="card-badge">Discrete Mathematics</div>
+                    <h3>Graph Theory MST Solver</h3>
+                    <p>A computational tool visualizing graph representation models and computing Minimum Spanning Trees using Kruskal's & Prim's algorithms.</p>
+                    <div class="tech-tags">
+                        <span>Java</span>
+                        <span>Discrete Math</span>
+                        <span>Kruskal & Prim</span>
+                    </div>
+                    <button class="card-action-btn" onclick="openProjectModal('graph-solver')">
+                        View System Specs <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </article>
+            </div>
+        </section>
+
+        <!-- Academic Roadmap -->
+        <section class="section-container" id="goals">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-list-check"></i> Academic Quest Roadmap</h2>
+                <p>Tracking milestone accomplishments, technical proficiencies, and long-term graduation goals.</p>
+            </div>
+
+            <div class="goals-timeline">
+                <div class="timeline-item completed">
+                    <div class="timeline-marker"><i class="fa-solid fa-check"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 1 &middot; Fundamental Foundations</span>
+                        <h3>Programming Foundations & Digital Logic</h3>
+                        <p>Mastered Java Object-Oriented principles, array handling in Python, and simulated sequential logic counters using 7400-series ICs.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item active">
+                    <div class="timeline-marker"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 2 &middot; Current Academic Quest</span>
+                        <h3>Full-Stack Systems & Database Architecture</h3>
+                        <p>Developing proficiency in relational database designs, asynchronous web APIs, and dynamic front-end rendering engines.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item planned">
+                    <div class="timeline-marker"><i class="fa-solid fa-hourglass-start"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 3 &middot; Upcoming Target</span>
+                        <h3>Capstone Systems Implementation</h3>
+                        <p>Architecting an enterprise software application solving real-world domain challenges for local communities or campuses.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item planned">
+                    <div class="timeline-marker"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="timeline-content">
+                        <span class="timeline-date">Phase 4 &middot; Graduation Target</span>
+                        <h3>BSIT Degree & Software Developer Career</h3>
+                        <p>Graduate from CTU-Argao Campus and launch a career as a Systems Architect & Full-Stack Developer.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Developer Playground -->
+        <section class="section-container" id="playground">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-flask"></i> Interactive Lab: Sorting Visualizer</h2>
+                <p>Observe real-time visual and procedural execution of sorting algorithms using dynamic DOM manipulations.</p>
+            </div>
+
+            <div class="interactive-lab-card">
+                <div class="lab-controls">
+                    <button id="generateArrayBtn" class="lab-btn"><i class="fa-solid fa-dice"></i> Generate New Array</button>
+                    <button id="startSortBtn" class="lab-btn primary-lab-btn"><i class="fa-solid fa-play"></i> Run Bubble Sort</button>
+                    
+                    <div class="speed-selector">
+                        <label for="sortSpeed"><i class="fa-solid fa-gauge-high"></i> Speed:</label>
+                        <input type="range" id="sortSpeed" min="10" max="200" value="100">
+                    </div>
+                </div>
+                
+                <div class="visualizer-container" id="visualizerContainer"></div>
+
+                <div class="lab-terminal-log" id="labLog">
+                    <code>[SYSTEM READY]: Select an action above to visualize real-time array sorting.</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section-container" id="contact">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-paper-plane"></i> Connect With Me</h2>
+                <p>Have an academic inquiry or project collaboration idea? Send a message!</p>
+            </div>
+
+            <div class="contact-wrapper">
+                <div class="contact-info-card">
+                    <h3>Contact Information</h3>
+                    <p>Feel free to reach out for software projects, tech discussions, or academic inquiries.</p>
+                    
+                    <div class="info-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <span>Email</span>
+                            <p>kobe.basanal@ctu.edu.ph</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <span>Campus Base</span>
+                            <p>Cebu Technological University – Argao Campus, Cebu, PH</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <div>
+                            <span>Degree Program</span>
+                            <p>BS Information Technology</p>
+                        </div>
+                    </div>
+
+                    <div class="social-links-large">
+                        <a href="https://github.com" target="_blank" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="mailto:kobe.basanal@ctu.edu.ph" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); handleFormSubmit();">
+                    <div class="form-group">
+                        <label for="userName">Your Name</label>
+                        <input type="text" id="userName" placeholder="e.g. Alex Mercer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Your Email</label>
+                        <input type="email" id="userEmail" placeholder="e.g. alex@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userSubject">Subject</label>
+                        <input type="text" id="userSubject" placeholder="Project Inquiry / Collaboration" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userMessage">Message</label>
+                        <textarea id="userMessage" rows="5" placeholder="Write your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary-btn btn-full"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+                    <div class="form-status" id="formStatus" style="margin-top: 1rem; text-align: center; font-weight: 600;"></div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="code-bracket">&lt;</span>KOBE<span class="code-slash">/</span>DEV<span class="code-bracket">&gt;</span>
+                <p>Designed with HTML5, CSS3, Three.js 3D WebGL, and JavaScript ES6.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kobe D. Basanal. All rights reserved. CTU-Argao BSIT Portfolio.</p>
+                <div class="back-to-top">
+                    <a href="#top" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i> Top</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Details Modal Popup -->
+    <div class="modal-overlay" id="projectModal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true">
+            <button class="modal-close-btn" onclick="closeProjectModal()" aria-label="Close Modal">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Combined JavaScript Logic & Enhanced 3D WebGL Engine -->
+    <script>
+        // ==========================================================================
+        // 1. MOUSE SPOTLIGHT TRACKING
+        // ==========================================================================
+        const cursorGlow = document.getElementById('cursorGlow');
+        window.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = `${e.clientX}px`;
+            cursorGlow.style.top = `${e.clientY}px`;
+        });
+
+        // ==========================================================================
+        // 2. THREE.JS ENHANCED 3D BACKGROUND ENGINE
+        // ==========================================================================
+        const canvas3D = document.getElementById('webglCanvas');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas3D, alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Central Wireframe Geometry
+        const mainGeometry = new THREE.IcosahedronGeometry(4.5, 2);
+        const mainMaterial = new THREE.MeshBasicMaterial({
+            color: 0x06b6d4,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.2
+        });
+        const mainMesh = new THREE.Mesh(mainGeometry, mainMaterial);
+        scene.add(mainMesh);
+
+        // Inner Core Mesh
+        const innerGeometry = new THREE.IcosahedronGeometry(2.2, 1);
+        const innerMaterial = new THREE.MeshBasicMaterial({
+            color: 0xa855f7,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35
+        });
+        const innerMesh = new THREE.Mesh(innerGeometry, innerMaterial);
+        scene.add(innerMesh);
+
+        // Dynamic Constellation Particles Swarm
+        const particleCount = 200;
+        const particleGeometry = new THREE.BufferGeometry();
+        const particlePositions = new Float32Array(particleCount * 3);
+        const particleVelocities = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            particlePositions[i * 3] = (Math.random() - 0.5) * 25;
+            particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 25;
+            particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 25;
+
+            particleVelocities.push({
+                x: (Math.random() - 0.5) * 0.015,
+                y: (Math.random() - 0.5) * 0.015,
+                z: (Math.random() - 0.5) * 0.015
+            });
+        }
+
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            color: 0x38bdf8,
+            size: 0.08,
+            transparent: true,
+            opacity: 0.7
+        });
+
+        const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+        scene.add(particleSystem);
+
+        camera.position.z = 10;
+
+        // Mouse Parallax Interaction
+        let mouseX = 0, mouseY = 0;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) - 0.5;
+            mouseY = (e.clientY / window.innerHeight) - 0.5;
+        });
+
+        const clock = new THREE.Clock();
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            const elapsedTime = clock.getElapsedTime();
+
+            mainMesh.rotation.x = elapsedTime * 0.08;
+            mainMesh.rotation.y = elapsedTime * 0.12;
+
+            innerMesh.rotation.x = -elapsedTime * 0.15;
+            innerMesh.rotation.y = -elapsedTime * 0.2;
+
+            // Animate Particles
+            const positions = particleGeometry.attributes.position.array;
+            for (let i = 0; i < particleCount; i++) {
+                positions[i * 3] += particleVelocities[i].x;
+                positions[i * 3 + 1] += particleVelocities[i].y;
+                positions[i * 3 + 2] += particleVelocities[i].z;
+
+                if (Math.abs(positions[i * 3]) > 13) particleVelocities[i].x *= -1;
+                if (Math.abs(positions[i * 3 + 1]) > 13) particleVelocities[i].y *= -1;
+                if (Math.abs(positions[i * 3 + 2]) > 13) particleVelocities[i].z *= -1;
+            }
+            particleGeometry.attributes.position.needsUpdate = true;
+
+            // Parallax Tracking
+            scene.rotation.y += (mouseX * 1.5 - scene.rotation.y) * 0.05;
+            scene.rotation.x += (mouseY * 1.5 - scene.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate3D();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ==========================================================================
+        // 3. SYNTHESIZED WEB AUDIO SOUND FX
+        // ==========================================================================
+        let soundEnabled = true;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function playSound(freq, type = 'sine', duration = 0.08) {
+            if (!soundEnabled) return;
+            if (!audioCtx) audioCtx = new AudioContext();
+
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.warn("Audio Context Error:", e);
+            }
+        }
+
+        document.getElementById('soundToggleBtn').addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('soundToggleBtn');
+            btn.innerHTML = soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+            if (soundEnabled) playSound(600, 'sine', 0.1);
+        });
+
+        document.querySelectorAll('button, a, .filter-btn').forEach(elem => {
+            elem.addEventListener('mouseenter', () => playSound(380, 'sine', 0.03));
+            elem.addEventListener('click', () => playSound(720, 'triangle', 0.06));
+        });
+
+        // ==========================================================================
+        // 4. THEME & COUNTERS
+        // ==========================================================================
+        const themeBtn = document.getElementById('themeToggleBtn');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+            mainMaterial.color.setHex(isLight ? 0x0284c7 : 0x06b6d4);
+        });
+
+        function animateCounters() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const target = +stat.getAttribute('data-target');
+                let count = 0;
+                const speed = target / 30;
+                const updateCount = () => {
+                    count += speed;
+                    if (count < target) {
+                        stat.innerText = Math.ceil(count);
+                        setTimeout(updateCount, 40);
+                    } else {
+                        stat.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        }
+        window.addEventListener('DOMContentLoaded', animateCounters);
+
+        // ==========================================================================
+        // 5. PROJECT FILTERING & MODAL ENGINE
+        // ==========================================================================
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        const projectDetails = {
+            'counter': {
+                title: '0–99 Up/Down Digital Counter',
+                tech: 'Electronics Workbench & Digital Logic',
+                description: 'Constructed using cascading 74192 decade counter ICs driven by clock generators, converted via 74138 decoders, and routed to 7-segment LED displays. Features reversible counting modes and state reset functions.',
+                specs: ['Cascading 74192 ICs', '74138 Active-Low Decoders', 'Simulated in EWB']
+            },
+            'java-emp': {
+                title: 'Employee Management System',
+                tech: 'Java 17 / Object-Oriented Principles',
+                description: 'Console application featuring object composition, dynamic array expansion algorithms, data validation, and automated calculations.',
+                specs: ['Polymorphism & Inheritance', 'Input Validation Routines', 'Array Dynamic Resizing']
+            },
+            'python-matrix': {
+                title: 'Data Matrix & List Processor',
+                tech: 'Python 3.10',
+                description: 'Features array initialization, list comprehension, and conditional logic for fast statistical computations.',
+                specs: ['List Operations', 'Matrix Operations', 'Algorithmic Optimizations']
+            },
+            'web-portfolio': {
+                title: 'Interactive Cybernetic Portfolio',
+                tech: 'HTML5, Modern CSS3, JavaScript ES6 & Three.js',
+                description: 'Features dynamic WebGL 3D rendering, procedural sound FX via Web Audio API, dynamic sorting visualizer, and responsive UI components.',
+                specs: ['Three.js WebGL Engine', 'Web Audio API', 'CSS Glassmorphism UI']
+            },
+            'research-audit': {
+                title: 'Campus Environmental Audit',
+                tech: 'NSTP-CWTS Academic Proposal',
+                description: 'A sustainability audit covering energy consumption, waste processing, water usage, and biodiversity initiatives at CTU-Argao Campus.',
+                specs: ['Resource Analysis', 'Data Collection', 'Sustainability Plan']
+            },
+            'graph-solver': {
+                title: 'Graph Theory Minimum Spanning Tree Solver',
+                tech: 'Java & Discrete Mathematics',
+                description: 'Computes Minimum Spanning Trees using Kruskal\'s and Prim\'s algorithms from adjacency matrices.',
+                specs: ['Adjacency Matrix Conversion', 'Kruskal Greedy Solver', 'Prim MST Computation']
+            }
+        };
+
+        function openProjectModal(id) {
+            const modal = document.getElementById('projectModal');
+            const body = document.getElementById('modalBody');
+            const data = projectDetails[id];
+
+            if (data) {
+                const specsHtml = data.specs.map(s => `<li style="margin-bottom:0.5rem;"><i class="fa-solid fa-check green-text"></i> ${s}</li>`).join('');
+                body.innerHTML = `
+                    <h2 style="margin-bottom: 0.5rem; color: var(--neon-cyan); font-size: 1.8rem;">${data.title}</h2>
+                    <p style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--neon-purple); margin-bottom: 1.2rem;">[Tech Stack: ${data.tech}]</p>
+                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">${data.description}</p>
+                    <h4 style="margin-bottom: 0.8rem; font-size: 1rem;">Key Technical Specifications:</h4>
+                    <ul style="list-style: none; margin-bottom: 2rem;">${specsHtml}</ul>
+                    <button class="btn primary-btn" onclick="closeProjectModal()"><i class="fa-solid fa-xmark"></i> Close Technical View</button>
+                `;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.remove('active');
+        }
+
+        // ==========================================================================
+        // 6. SORTING VISUALIZER ENGINE
+        // ==========================================================================
+        const visualizerContainer = document.getElementById('visualizerContainer');
+        const labLog = document.getElementById('labLog');
+        let array = [];
+        let isSorting = false;
+
+        function generateArray(size = 22) {
+            if (isSorting) return;
+            array = [];
+            for (let i = 0; i < size; i++) {
+                array.push(Math.floor(Math.random() * 80) + 15);
+            }
+            drawArray();
+            labLog.innerHTML = `<code>[SYSTEM]: Generated new randomized array (size ${size}). Ready to run sorting algorithms.</code>`;
+        }
+
+        function drawArray() {
+            visualizerContainer.innerHTML = '';
+            array.forEach((val, idx) => {
+                const bar = document.createElement('div');
+                bar.className = 'array-bar';
+                bar.style.height = `${val}%`;
+                bar.id = `bar-${idx}`;
+                visualizerContainer.appendChild(bar);
+            });
+        }
+
+        async function bubbleSort() {
+            if (isSorting) return;
+            isSorting = true;
+            const delay = 210 - document.getElementById('sortSpeed').value;
+            labLog.innerHTML = `<code>[RUNNING]: Bubble Sort Algorithm started...</code>`;
+
+            for (let i = 0; i < array.length; i++) {
+                for (let j = 0; j < array.length - i - 1; j++) {
+                    const bar1 = document.getElementById(`bar-${j}`);
+                    const bar2 = document.getElementById(`bar-${j + 1}`);
+
+                    bar1.classList.add('compare');
+                    bar2.classList.add('compare');
+                    playSound(200 + array[j] * 6, 'sine', 0.02);
+
+                    await new Promise(r => setTimeout(r, delay));
+
+                    if (array[j] > array[j + 1]) {
+                        bar1.classList.remove('compare');
+                        bar2.classList.remove('compare');
+                        bar1.classList.add('swap');
+                        bar2.classList.add('swap');
+
+                        let temp = array[j];
+                        array[j] = array[j + 1];
+                        array[j + 1] = temp;
+
+                        bar1.style.height = `${array[j]}%`;
+                        bar2.style.height = `${array[j + 1]}%`;
+
+                        await new Promise(r => setTimeout(r, delay));
+                    }
+
+                    bar1.className = 'array-bar';
+                    bar2.className = 'array-bar';
+                }
+                document.getElementById(`bar-${array.length - i - 1}`).classList.add('sorted');
+            }
+
+            labLog.innerHTML = `<code>[SUCCESS]: Bubble Sort complete! Array fully sorted.</code>`;
+            playSound(850, 'sine', 0.15);
+            isSorting = false;
+        }
+
+        document.getElementById('generateArrayBtn').addEventListener('click', () => generateArray());
+        document.getElementById('startSortBtn').addEventListener('click', () => bubbleSort());
+
+        generateArray();
+
+        // ==========================================================================
+        // 7. CONTACT FORM
+        // ==========================================================================
+        function handleFormSubmit() {
+            const status = document.getElementById('formStatus');
+            status.style.color = 'var(--neon-green)';
+            status.innerText = "Message sent successfully! Kobe will get back to you soon.";
+            document.getElementById('contactForm').reset();
+            playSound(750, 'sine', 0.2);
+        }
+    </script>
+</body>
+</html>
