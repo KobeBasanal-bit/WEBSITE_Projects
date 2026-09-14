@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUMEN // OPTICAL ARCHITECTURE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070709;
+      --text: #f4f4f6;
+      --accent-dispersion: #e5c07b;
+      --accent-glow: rgba(229, 192, 123, 0.2);
+      --border-thin: rgba(255, 255, 255, 0.12);
+      --mono-font: 'Space Grotesk', sans-serif;
+      --serif-font: 'Italiana', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--bg);
+      font-family: var(--mono-font);
+      color: var(--text);
+    }
+
+    /* Fullscreen Optical Render Canvas */
+    #prismCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Asymmetric Structural Grid Overlay */
+    .structural-frame {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: 420px 1fr 340px;
+      grid-template-rows: 90px 1fr 100px;
+      padding: 48px 64px;
+      border: 1px solid var(--border-thin);
+      margin: 24px;
+      border-radius: 24px;
+      box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Header Section */
+    .frame-header {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-thin);
+      padding-bottom: 24px;
+      pointer-events: auto;
+    }
+
+    .brand-mark {
+      font-family: var(--serif-font);
+      font-size: 1.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .system-status {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(244, 244, 246, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-reticle {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--accent-dispersion);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .status-reticle::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--accent-dispersion);
+    }
+
+    /* Left Editorial Column */
+    .editorial-col {
+      grid-column: 1;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 28px;
+      pointer-events: auto;
+      padding-right: 40px;
+    }
+
+    .catalog-code {
+      font-size: 0.68rem;
+      letter-spacing: 0.4em;
+      color: var(--accent-dispersion);
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-family: var(--serif-font);
+      font-size: 4rem;
+      line-height: 0.95;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.35) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: rgba(244, 244, 246, 0.5);
+      font-weight: 300;
+    }
+
+    /* Right Physical Control Matrix */
+    .control-col {
+      grid-column: 3;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 32px;
+      pointer-events: auto;
+      background: rgba(10, 10, 14, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid var(--border-thin);
+    }
+
+    .control-head {
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(244, 244, 246, 0.4);
+      border-bottom: 1px dashed var(--border-thin);
+      padding-bottom: 12px;
+    }
+
+    .slider-block {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .slider-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+    }
+
+    .slider-info span:last-child {
+      color: var(--accent-dispersion);
+    }
+
+    .custom-range {
+      width: 100%;
+      height: 2px;
+      background: var(--border-thin);
+      appearance: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .custom-range::-webkit-slider-thumb {
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--text);
+      border-radius: 0;
+      transform: rotate(45deg);
+      transition: background 0.2s ease;
+    }
+
+    .custom-range::-webkit-slider-thumb:hover {
+      background: var(--accent-dispersion);
+    }
+
+    /* Footer Navigation & CTA */
+    .frame-footer {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid var(--border-thin);
+      padding-top: 20px;
+      pointer-events: auto;
+    }
+
+    .telemetry-readout {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      color: rgba(244, 244, 246, 0.35);
+      text-transform: uppercase;
+    }
+
+    .action-btn {
+      padding: 18px 48px;
+      background: transparent;
+      border: 1px solid var(--text);
+      color: var(--text);
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--text);
+      color: var(--bg);
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .sound-toggle {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: rgba(244, 244, 246, 0.4);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .sound-toggle:hover {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Refraction Stage Canvas -->
+  <canvas id="prismCanvas"></canvas>
+
+  <!-- Structural Frame Grid Overlay -->
+  <div class="structural-frame">
+    <div class="frame-header">
+      <div class="brand-mark">LUMEN // 01</div>
+      <div class="system-status">
+        <div class="status-reticle"></div>
+        OPTICAL REFRACTION ENGINE
+      </div>
+    </div>
+
+    <!-- Editorial Left -->
+    <div class="editorial-col">
+      <div class="catalog-code">ARCHITECTURAL WEARABLE</div>
+      <h1>Prism Core</h1>
+      <p>Precision-milled monocrystalline sapphire core. Light rays refract dynamically through polar dispersion fields to project spatial biometric notifications onto the user’s palm.</p>
+    </div>
+
+    <!-- Controls Right -->
+    <div class="control-col">
+      <div class="control-head">OPTICAL METRICS</div>
+
+      <div class="slider-block">
+        <div class="slider-info">
+          <span>REFRACTIVE INDEX</span>
+          <span id="refractVal">2.42</span>
+        </div>
+        <input type="range" min="1.0" max="3.5" step="0.01" value="2.42" class="custom-range" id="refractSlider">
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-info">
+          <span>CHROMATIC DISPERSION</span>
+          <span id="dispVal">0.85</span>
+        </div>
+        <input type="range" min="0.1" max="2.0" step="0.05" value="0.85" class="custom-range" id="dispSlider">
+      </div>
+
+      <div class="slider-block">
+        <div class="slider-info">
+          <span>POLAR DENSITY</span>
+          <span id="densityVal">60%</span>
+        </div>
+        <input type="range" min="10" max="100" step="1" value="60" class="custom-range" id="densitySlider">
+      </div>
+    </div>
+
+    <!-- Footer Row -->
+    <div class="frame-footer">
+      <div class="sound-toggle" id="soundBtn">[ HARMONIC AUDIO: OFF ]</div>
+      <div class="telemetry-readout" id="telemetryReadout">LATENCY: 0.04ms // COHERENCE: OPTIMAL</div>
+      <button class="action-btn">Acquire Object</button>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('prismCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const refractSlider = document.getElementById('refractSlider');
+    const dispSlider = document.getElementById('dispSlider');
+    const densitySlider = document.getElementById('densitySlider');
+
+    const refractVal = document.getElementById('refractVal');
+    const dispVal = document.getElementById('dispVal');
+    const densityVal = document.getElementById('densityVal');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let targetMouseX = mouseX;
+    let targetMouseY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      targetMouseX = e.clientX;
+      targetMouseY = e.clientY;
+    });
+
+    // --- Web Audio Harmonic Overtone Synthesizer ---
+    let audioCtx = null;
+    let isSoundOn = false;
+    const soundBtn = document.getElementById('soundBtn');
+
+    soundBtn.addEventListener('click', () => {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      isSoundOn = !isSoundOn;
+      soundBtn.innerText = isSoundOn ? '[ HARMONIC AUDIO: ON ]' : '[ HARMONIC AUDIO: OFF ]';
+      if (isSoundOn) triggerTone(440);
+    });
+
+    function triggerTone(freq) {
+      if (!isSoundOn || !audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.5);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 1.5);
+    }
+
+    // Slider Event Triggers
+    refractSlider.addEventListener('input', (e) => {
+      refractVal.innerText = e.target.value;
+      triggerTone(200 + parseFloat(e.target.value) * 100);
+    });
+
+    dispSlider.addEventListener('input', (e) => {
+      dispVal.innerText = e.target.value;
+      triggerTone(300 + parseFloat(e.target.value) * 150);
+    });
+
+    densitySlider.addEventListener('input', (e) => {
+      densityVal.innerText = e.target.value + '%';
+      triggerTone(150 + parseFloat(e.target.value) * 3);
+    });
+
+    // --- Optical Prism Raymarching Simulation ---
+    let time = 0;
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+      time += 0.01;
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      const refractiveIndex = parseFloat(refractSlider.value);
+      const dispersion = parseFloat(dispSlider.value);
+      const density = parseInt(densitySlider.value);
+
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // Mouse Parallax Rotation
+      const tiltX = (mouseY - cy) * 0.0008;
+      const tiltY = (mouseX - cx) * 0.0008;
+
+      // Draw Light Ray Arrays Refracting through Prism Geometry
+      for (let i = 0; i < density; i++) {
+        const angle = (i / density) * Math.PI * 2 + time * 0.2;
+        const dist = 120 + Math.sin(time + i * 0.1) * 20;
+
+        const x1 = Math.cos(angle + tiltY) * dist;
+        const y1 = Math.sin(angle + tiltX) * dist;
+
+        // Refracted Bending Vector
+        const x2 = x1 * refractiveIndex * 0.6;
+        const y2 = y1 * refractiveIndex * 0.6;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+
+        // Chromatic Aberration Spectral Calculation
+        const hue = (i * dispersion * 15 + time * 50) % 360;
+        ctx.strokeStyle = `hsla(${hue}, 80%, 70%, 0.4)`;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Refracted Focal Points
+        ctx.beginPath();
+        ctx.arc(x2, y2, 1.8, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${hue}, 90%, 80%, 0.8)`;
+        ctx.fill();
+      }
+
+      // Draw Crystalline Monolithic Prism Outline
+      const prismSize = 130;
+      ctx.beginPath();
+      for (let j = 0; j < 3; j++) {
+        const polyAngle = (j / 3) * Math.PI * 2 + time * 0.1 + tiltY;
+        const px = Math.cos(polyAngle) * prismSize;
+        const py = Math.sin(polyAngle) * prismSize;
+
+        if (j === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.lineWidth = 1.5;
+      ctx.shadowBlur = 25;
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+      ctx.stroke();
+
+      ctx.restore();
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  </script>
+</body>
+</html>
